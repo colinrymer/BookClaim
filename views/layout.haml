@@ -1,0 +1,34 @@
+!!! 5
+%html
+  %head
+    %title
+      BookClaim
+    %link(rel="stylesheet" href="css/bootstrap.min.css")
+    %link(rel="stylesheet" href="css/bootstrap-responsive.min.css")
+    %link(rel="stylesheet" href="css/main.css")
+  %body
+    .row
+      #header.span12
+        %h1.page-header
+          BookClaim
+          %small
+            I'm leaving. Claim your damn books.
+
+    .row
+      #nav.span3
+        .well{ style: 'padding: 8px 0px;' }
+          %ul.nav.nav-list
+            %li.nav-header
+              Navigation
+            %li
+              %a{ href: '/' } Home
+            %li
+              %a{ href: '/books' } Books
+
+      #content.span9
+        = yield
+
+    .row
+      #footer.span12
+        &copy; 2012 Eric Haughee
+
