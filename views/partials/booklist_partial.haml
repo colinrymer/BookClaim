@@ -1,0 +1,23 @@
+%script(id="book-partial" type="text/x-handlebars-template")
+  %ul.thumbnails
+    %li.span3
+      %a(href="#")
+        .thumbnail
+          %img(src="{{volumeInfo.thumbnail}}" alt="")
+          %h5 {{volumeInfo.title}}
+          %p {{volumeInfo.description}}
+
+%script(id="booklist-template" type="text/x-handlebars-template")
+  {{#if books}}
+    {{#each books}}
+      {{> book}}
+    {{/each}}
+  {{/if}}
+
+%script(type="text/javascript")
+  $(document).ready(function() {
+    var template = Handlebars.compile($("#booklist-template").html());
+    Handlebars.registerPartial("book", $("#book-partial").html());
+
+    template()
+  });

@@ -1,3 +1,16 @@
 %h2 Books
 %p
-  = content
+  - if books
+    - books.each do |book|
+      %ul.thumbnails
+        %li.span3
+          %a(href="#")
+            .thumbnail
+              %img{ src: book["volumeInfo"]["thumbnail"], alt: book["volumeInfo"]["title"] }
+              %h5
+                = book["volumeInfo"]["title"]
+              %p
+                = book["volumeInfo"]["description"]
+      -#- partial('partials/book_partial', locals: [ book ])
+  - else
+    No books

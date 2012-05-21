@@ -11,7 +11,30 @@
         API Key:
       = apikey
     #add_a_book.tab-pane
-      %form.form-search.well.span5{ method: 'POST', action: '/book_search' }
-        %input.search-query.input-medium{ type: 'text', placeholder: 'ISBN or Title', name: 'q' }
-        %button.btn.btn-inverse{ type: 'submit' }
-          Search
+      .well
+        %form.form-search.span5{ method: 'POST', action: '/book_search' }
+          %input.search-query.input-medium{ type: 'text',
+                                            placeholder: 'ISBN or Title',
+                                            name: 'q',
+                                            value: (query if defined? query) }
+          %button.btn.btn-inverse{ type: 'submit' }
+            Search
+      - if defined? books
+        .well
+          %ul.thumbnails
+            - books.each do |book|
+              %li.span3
+                .thumbnail
+                  - if book["volumeInfo"]["imageLinks"]
+                    %img{ src: book["volumeInfo"]["imageLinks"]["thumbnail"], alt: book["volumeInfo"]["title"] }
+                  %h4
+                    = book["volumeInfo"]["title"]
+                  %h5
+                    -if book["volumeInfo"]["authors"]
+                      by:
+                      - book["volumeInfo"]["authors"].each do |author|
+                        = author
+                  %p
+                    - if book["volumeInfo"]["description"]
+                      = book["volumeInfo"]["description"][0..60] + '...'
+            -#- partial('partials/book_partial', locals: [ book ])

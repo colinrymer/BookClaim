@@ -1,0 +1,9 @@
+%ul.thumbnails
+  %li.span3
+    %a(href="#")
+      .thumbnail
+        %img{ src: book.volumeInfo.thumbnail, alt: book.volumeInfo.title }
+        %h5
+          = book.volumeInfo.title
+        %p
+          = book.volumeInfo.description
