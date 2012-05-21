@@ -1,0 +1,17 @@
+.tabbable
+  %ul.nav.nav-pills
+    %li.active
+      %a(data-toggle="pill"){ href: '#dashboard' } Dashboard
+    %li
+      %a(data-toggle="pill"){ href: '#add_a_book' } Add A Book
+
+  .tab-content
+    #dashboard.tab-pane.active
+      %span{ style: 'font-weight: bold;' }
+        API Key:
+      = apikey
+    #add_a_book.tab-pane
+      %form.form-search.well.span5{ method: 'POST', action: '/book_search' }
+        %input.search-query.input-medium{ type: 'text', placeholder: 'ISBN or Title', name: 'q' }
+        %button.btn.btn-inverse{ type: 'submit' }
+          Search

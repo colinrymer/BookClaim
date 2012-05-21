@@ -6,7 +6,10 @@
     %link(rel="stylesheet" href="css/bootstrap.min.css")
     %link(rel="stylesheet" href="css/bootstrap-responsive.min.css")
     %link(rel="stylesheet" href="css/main.css")
+    %script{ type: 'text/javascript', src: 'js/jquery-1.7.2.min.js' }
+    %script{ type: 'text/javascript', src: 'js/bootstrap.min.js' }
   %body
+    -# Header
     .row
       #header.span12
         %h1.page-header
@@ -14,6 +17,7 @@
           %small
             I'm leaving. Claim your damn books.
 
+    -# Navigation
     .row
       #nav.span3
         .well{ style: 'padding: 8px 0px;' }
@@ -28,6 +32,7 @@
       #content.span9
         = yield
 
+    -# Footer
     .row
       #footer.span12
         &copy; 2012 Eric Haughee
