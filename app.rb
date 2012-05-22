@@ -1,12 +1,28 @@
 require 'sinatra'
 require 'sinatra/config_file'
+require 'data_mapper'
 require 'net/http'
 require 'json'
 require 'curb'
 require 'haml'
 
-config_file 'config.yml'
 enable :logging
+
+config_file 'config.yml'
+
+DataMapper::Logger.new($stdout, :debug)
+DataMapper.setup(:default, "sqlite3::memory:")
+
+class Book
+  include DataMapper::Resource
+
+  property :id,           Serial
+  property :title,        String
+  property :authors,      String
+  property :description,  Text
+  property :thumbnail,    String
+
+end
 
 helpers do
   def protected!
@@ -45,13 +61,28 @@ get '/books/?' do
 end
 
 post '/book_search/?' do
+  # TODO: This shouldn't redirect to admin, it should be general
+  redirect '/admin' unless defined? query
   apikey = settings.apikey
   query = request.params["q"]
 
   resp = Curl::Easy.perform("https://www.googleapis.com/books/v1/volumes?q=" + URI.encode(query) + "&key=" + apikey)
   resp = JSON.parse(resp.body_str)
 
+  # TODO: This shouldn't load admin by default, it should be general
   haml :admin, locals: { apikey: apikey, books: resp["items"], query: query }
+end
+
+post '/add_book/?' do
+  Book.auto_migrate!
+
+  book = Book.new
+  book.title       = request.params["title"]
+  book.authors     = request.params["authors"].join(", ")
+  book.description = request.params["description"]
+  book.thumbnail   = request.params["thumbnail"]
+
+  book.save
 end
 
 get '/book_search/?' do
