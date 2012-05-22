@@ -1,6 +1,6 @@
 require 'sinatra'
 require 'sinatra/config_file'
-require 'lib/database'
+require './lib/database'
 require 'net/http'
 require 'json'
 require 'curb'

@@ -43,6 +43,7 @@ body {
 
 .thumbnail .btn {
     position: absolute;
+    margin: 0px auto 0px auto;
     bottom: 5px;
-    width: 140px;
+    width: 79%;
 }

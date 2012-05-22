@@ -15,7 +15,7 @@
           %input(type="hidden" name="authors"){ value: book["volumeInfo"]["authors"].join(',') }
           %input(type="hidden" name="description"){ value: book["volumeInfo"]["description"] }
           - if authorized?
-            %a.btn.btn-primary(href="/remove_book")
+            %a.btn.btn-danger(href="/remove_book")
               = "Delete"
           - else
             %button.btn.btn-primary(type="submit")

@@ -1,7 +1,7 @@
 require 'data_mapper'
 
 DataMapper::Logger.new($stdout, :debug)
-DataMapper.setup(:default, ENV["DATABASE_URL"])
+DataMapper.setup(:default, ENV["DATABASE_URL"] || "sqlite3::memory:")
 
 class Book
   include DataMapper::Resource
