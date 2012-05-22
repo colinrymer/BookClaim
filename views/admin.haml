@@ -11,14 +11,4 @@
         API Key:
       = apikey
     #add_a_book.tab-pane
-      .well
-        %form.form-search.span5{ method: 'POST', action: '/book_search' }
-          %input.search-query.input-medium{ type: 'text',
-                                            placeholder: 'ISBN or Title',
-                                            name: 'q',
-                                            value: (query if defined? query) }
-          %button.btn.btn-inverse{ type: 'submit' }
-            Search
-      - if defined? books
-        .well
-          = partial(:'partials/book_partial', locals: { books: books })
+      = partial(:'partials/book_search_partial', locals: { books: books })

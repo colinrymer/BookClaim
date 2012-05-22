@@ -34,7 +34,7 @@ helpers do
 end
 
 get '/' do
-  haml :index, locals: { content: "Testing" }
+  haml :index
 end
 
 get '/admin/?' do
