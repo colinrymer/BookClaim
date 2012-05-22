@@ -62,9 +62,10 @@ end
 
 post '/book_search/?' do
   # TODO: This shouldn't redirect to admin, it should be general
-  redirect '/admin' unless defined? query
-  apikey = settings.apikey
+  redirect '/admin' unless defined? request.params["q"]
+
   query = request.params["q"]
+  apikey = settings.apikey
 
   resp = Curl::Easy.perform("https://www.googleapis.com/books/v1/volumes?q=" + URI.encode(query) + "&key=" + apikey)
   resp = JSON.parse(resp.body_str)

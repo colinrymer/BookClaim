@@ -32,8 +32,7 @@
                   %h5
                     -if book["volumeInfo"]["authors"]
                       by:
-                      - book["volumeInfo"]["authors"].each do |author|
-                        = author
+                      = book["volumeInfo"]["authors"].join(", ")
                   %p
                     - if book["volumeInfo"]["description"]
                       = book["volumeInfo"]["description"][0..60] + '...'
