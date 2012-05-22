@@ -6,7 +6,7 @@ require 'json'
 require 'curb'
 require 'haml'
 
-enable :logging
+enable :logging, :sessions
 
 config_file 'config.yml'
 

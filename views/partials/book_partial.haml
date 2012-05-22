@@ -1,14 +1,26 @@
+- admin_dashboard = false unless defined? admin_dashboard
 %ul.thumbnails
   - books.each do |book|
     %li.span2
       .thumbnail
-        - if book["volumeInfo"]["imageLinks"]
-          %img{ src: book["volumeInfo"]["imageLinks"]["thumbnail"], alt: book["volumeInfo"]["title"] }
-        %h4.title
-          = book["volumeInfo"]["title"]
-        .authors
-          -if book["volumeInfo"]["authors"]
-            = book["volumeInfo"]["authors"].join(", ")
-        .description
-          - if book["volumeInfo"]["description"]
-            = book["volumeInfo"]["description"]
+        %form(method="POST" action="/add_book")
+          - if book["volumeInfo"]["imageLinks"]
+            %img{ src: book["volumeInfo"]["imageLinks"]["thumbnail"], alt: book["volumeInfo"]["title"] }
+            %input(type="hidden" name="thumbnail"){ value: book["volumeInfo"]["imageLinks"]["thumbnail"] }
+          %h4.title
+            = book["volumeInfo"]["title"]
+            %input(type="hidden" name="title"){ value: book["volumeInfo"]["title"] }
+          -#.authors
+          -#  -if book["volumeInfo"]["authors"]
+          -#    = book["volumeInfo"]["authors"].join(", ")
+          %input(type="hidden" name="authors"){ value: book["volumeInfo"]["authors"].join(',') }
+          -#.description
+          -#  - if book["volumeInfo"]["description"]
+          -#    = book["volumeInfo"]["description"]
+          %input(type="hidden" name="description"){ value: book["volumeInfo"]["description"] }
+          - if admin_dashboard
+            %a.btn.btn-primary(href="/remove_book")
+              = "Delete"
+          - else
+            %button.btn.btn-primary(type="submit")
+              = "Claim"

@@ -7,15 +7,20 @@ body {
 }
 
 .thumbnail {
+    position: relative;
     margin: 2px;
     padding: 5px;
     width: 140px;
-    height: 340px;
+    height: 290px;
+}
+
+.thumbnail form {
+    height: 100%;
 }
 
 .thumbnail img {
-    max-width: 140px;
-    height: 60%;
+    max-width: 240px;
+    max-height: 210px;
     margin-bottom: 4px;
 }
 
@@ -23,15 +28,21 @@ body {
     font-size: 12px;
 }
 
-.thumbnail .authors {
-    font-style: italic;
-    font-size: 12px;
-    margin: 5px 0px 5px 0px;
+/*.thumbnail .authors {*/
+    /*font-style: italic;*/
+    /*font-size: 12px;*/
+    /*margin: 5px 0px 5px 0px;*/
 
-}
+/*}*/
 
-.thumbnail .description {
-    display: inline-block;
-    height: 16%;
-    overflow: scroll;
+/*.thumbnail .description {*/
+    /*height: 12%;*/
+    /*overflow: scroll;*/
+    /*margin-bottom: 5px;*/
+/*}*/
+
+.thumbnail .btn {
+    position: absolute;
+    bottom: 5px;
+    width: 140px;
 }
