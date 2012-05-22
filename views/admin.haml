@@ -37,4 +37,4 @@
                   %p
                     - if book["volumeInfo"]["description"]
                       = book["volumeInfo"]["description"][0..60] + '...'
-            -#- partial('partials/book_partial', locals: [ book ])
+            -#- partial('partials/book_partial', locals: { book: book })

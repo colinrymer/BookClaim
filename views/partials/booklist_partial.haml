@@ -19,5 +19,6 @@
     var template = Handlebars.compile($("#booklist-template").html());
     Handlebars.registerPartial("book", $("#book-partial").html());
 
-    template()
+    var books = blah;
+    template(books)
   });

@@ -1,6 +1,6 @@
 %h2 Books
 %p
-  - if books
+  - if defined? books
     - books.each do |book|
       %ul.thumbnails
         %li.span3
@@ -13,4 +13,4 @@
                 = book["volumeInfo"]["description"]
       -#- partial('partials/book_partial', locals: [ book ])
   - else
-    No books
+    No books yet

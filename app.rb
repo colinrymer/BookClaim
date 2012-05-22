@@ -44,7 +44,7 @@ get '/books/?' do
   haml :books, locals: { content: "Testing books" }
 end
 
-post'/book_search/?' do
+post '/book_search/?' do
   apikey = settings.apikey
   query = request.params["q"]
 
