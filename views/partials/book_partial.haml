@@ -10,9 +10,9 @@
           %h4.title
             = book["volumeInfo"]["title"]
             %input(type="hidden" name="title"){ value: book["volumeInfo"]["title"] }
-          -#.authors
-          -#  -if book["volumeInfo"]["authors"]
-          -#    = book["volumeInfo"]["authors"].join(", ")
+          .authors
+            -if book["volumeInfo"]["authors"]
+              = book["volumeInfo"]["authors"].join(", ")
           %input(type="hidden" name="authors"){ value: book["volumeInfo"]["authors"].join(',') }
           -#.description
           -#  - if book["volumeInfo"]["description"]
