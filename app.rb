@@ -1,6 +1,6 @@
 require 'sinatra'
 require 'sinatra/config_file'
-require 'data_mapper'
+require 'lib/database'
 require 'net/http'
 require 'json'
 require 'curb'
@@ -9,29 +9,6 @@ require 'haml'
 enable :logging, :sessions
 
 config_file 'config.yml'
-
-DataMapper::Logger.new($stdout, :debug)
-DataMapper.setup(:default, "sqlite3::memory:")
-
-class Book
-  include DataMapper::Resource
-
-  property :id,           Serial
-  property :title,        String
-  property :authors,      String
-  property :description,  Text
-  property :thumbnail,    String
-
-end
-
-class User
-  include DataMapper::Resource
-
-  property :id,           Serial
-  property :username,     String
-  property :password,     String
-  property :admin,        Boolean
-end
 
 helpers do
   def protected!
