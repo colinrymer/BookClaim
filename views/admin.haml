@@ -23,7 +23,7 @@
         .well
           %ul.thumbnails
             - books.each do |book|
-              %li.span3
+              %li.span2
                 .thumbnail
                   - if book["volumeInfo"]["imageLinks"]
                     %img{ src: book["volumeInfo"]["imageLinks"]["thumbnail"], alt: book["volumeInfo"]["title"] }
