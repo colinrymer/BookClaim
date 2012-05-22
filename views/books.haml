@@ -1,16 +1,9 @@
 %h2 Books
 %p
   - if defined? books
-    - books.each do |book|
-      %ul.thumbnails
-        %li.span3
-          %a(href="#")
-            .thumbnail
-              %img{ src: book["volumeInfo"]["thumbnail"], alt: book["volumeInfo"]["title"] }
-              %h5
-                = book["volumeInfo"]["title"]
-              %p
-                = book["volumeInfo"]["description"]
-      -#- partial('partials/book_partial', locals: [ book ])
+    %h3 Search Results
+    %br
+    .well
+      = partial(:'partials/book_partial', locals: { books: books })
   - else
     No books yet

@@ -24,6 +24,15 @@ class Book
 
 end
 
+class User
+  include DataMapper::Resource
+
+  property :id,           Serial
+  property :username,     String
+  property :password,     String
+  property :admin,        Boolean
+end
+
 helpers do
   def protected!
     unless authorized?
@@ -38,8 +47,8 @@ helpers do
     @auth.provided? && @auth.basic? && @auth.credentials && @auth.credentials == ['admin', 'admin']
   end
 
-  def partial(page, options={})
-    haml page.to_sym, options.merge!(:layout => false)
+  def partial(page, options={}, locals={})
+    haml page.to_sym, options.merge!(:layout => false), locals
   end
 
   def logger
