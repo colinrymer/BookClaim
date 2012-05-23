@@ -86,7 +86,6 @@ delete '/books/:id/?' do
 end
 
 get '/book_search/?' do
-  logger.info(params.inspect)
   # TODO: This shouldn't redirect to admin, it should return JSON parsed on the client side
   redirect '/admin' unless defined? params[:q]
 
