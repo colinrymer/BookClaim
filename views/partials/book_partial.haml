@@ -1,24 +1,40 @@
--# TODO: Pull out looping and form and other stuff because i cant remember the comment now that colin fucked it up
-%ul.thumbnails
-  - books.each do |book|
-    %li.span2
-      .thumbnail
-        %form{ method: @route["method"], action: "#{@route["action"]}/#{book.id if defined? book.id}" }
-          - if book["volumeInfo"]["imageLinks"]
-            %img{ src: book["volumeInfo"]["imageLinks"]["thumbnail"], alt: book["volumeInfo"]["title"] }
-            %input(type="hidden" name="thumbnail"){ value: book["volumeInfo"]["imageLinks"]["thumbnail"] }
-          %h4.title
-            = book["volumeInfo"]["title"]
-            %input(type="hidden" name="title"){ value: book["volumeInfo"]["title"] }
-          .authors
-            -if book["volumeInfo"]["authors"]
-              = book["volumeInfo"]["authors"].join(", ")
-          %input(type="hidden" name="authors"){ value: book["volumeInfo"]["authors"].join(',') }
-          %input(type="hidden" name="description"){ value: book["volumeInfo"]["description"] }
-          %button.btn.btn-primary(type="submit")
-            - if search
-              Add
-            - elsif authorized?
-              Delete
-            - else
-              Claim`
+%script#book-partial(type="text/x-handlebars-template")
+    %ul(class="thumbnails")
+        %li.span2
+            {{#if volumeInfo.imageLinks }}
+            .thumbnail
+                %img(src="{{volumeInfo,imageLinks.thumbnail}}" alt="{{volumeInfo.title}}")
+                %input(type="hidden" name="thumbnail" value="{{volumeInfo.imageLinks.thumbnail}}")
+            {{/if}}
+
+            %h4.title plain: {{volumeInfo.title}}
+            %input(type="hidden" name="thumbnail" value="{{volumeInfo.title}}")
+
+            {{#if volumeInfo.authors}}
+            .authors"
+            {{#join volumeInfo.authors}}
+            %input(type="hidden" name="thumbnail" value="{{#join volumeInfo.authors}}")
+            {{/if}}
+
+            %button.btn.btn-primary(type="submit")
+                %i.icon-plus
+                Add
+
+%script#booklist-template(type="text/x-handlebars-template")
+    :plain
+        {{#if books}}
+            {{#each books}}
+                {{> book}}
+            {{/each}}
+        {{/if}}
+
+-#<!--<script type="text/javascript">-->
+-#    <!--$(document).ready(function() {-->
+-#        <!--var template = Handlebars.compile($("#booklist-template").html());-->
+-#        <!--Handlebars.registerPartial("book", $("#book-partial").html());-->
+-#
+-#        <!--var books = blah;-->
+-#        <!--template(books)-->
+-#    <!--});-->
+-#<!--</script>-->
+

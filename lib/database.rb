@@ -8,7 +8,6 @@ class Book
 
   property :id,           Serial
   property :title,        String
-  property :description,  Text
   property :authors,      String
   property :thumbnail,    String
 

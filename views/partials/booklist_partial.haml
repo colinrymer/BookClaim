@@ -1,11 +1,28 @@
 %script(id="book-partial" type="text/x-handlebars-template")
+  <ul class="thumbnails">
   %ul.thumbnails
-    %li.span3
-      %a(href="#")
-        .thumbnail
-          -#%img(src="{{volumeInfo.thumbnail}}" alt="")
-          %h5 {{volumeInfo.title}}
-          %p {{volumeInfo.description}}
+    %li.span2
+      .thumbnail
+        - if {{volumeInfo.imageLinks}}
+          %img{ src: {{volumeInfo.imageLinks.thumbnail}}, alt: book["volumeInfo"]["title"] }
+          %input(type="hidden" name="thumbnail"){ value: book["volumeInfo"]["imageLinks"]["thumbnail"] }
+        %h4.title
+          = book["volumeInfo"]["title"]
+          %input(type="hidden" name="title"){ value: book["volumeInfo"]["title"] }
+        .authors
+          -if book["volumeInfo"]["authors"]
+            = book["volumeInfo"]["authors"].join(", ")
+        %input(type="hidden" name="authors"){ value: book["volumeInfo"]["authors"].join(',') }
+        %button.btn.btn-primary(type="submit")
+          - if search
+            %i.icon-plus.icon-white
+            Add
+          - elsif authorized?
+            %i.icon-remove.icon-white
+            Delete
+          - else
+            %i.icon-ok.icon-white
+            Claim
 
 %script(id="booklist-template" type="text/x-handlebars-template")
   {{#if books}}

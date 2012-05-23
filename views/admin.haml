@@ -3,10 +3,14 @@
     %li.active
       %a(data-toggle="pill" href='#dashboard') Dashboard
     %li
+      %a(data-toggle="pill" href='#manage_books') Manage Books
+    %li
       %a(data-toggle="pill" href='#add_a_book') Add A Book
 
   .tab-content
     #dashboard.tab-pane.active
       Dashboard stuff here
+    #manage_books.tab-pane
+      No books
     #add_a_book.tab-pane
       = partial(:'partials/book_search_partial', locals: { books: @books, query: @query, route: @route })

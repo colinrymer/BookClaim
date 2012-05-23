@@ -70,7 +70,6 @@ post '/books/?'  do
   book = Book.create({
     title:       params["title"],
     authors:     params["authors"].join(","), # TODO: figure out how these are being received
-    description: params["description"],
     thumbnail:   params["thumbnail"]
   })
 
@@ -89,7 +88,6 @@ get '/book_search/?' do
   # TODO: This shouldn't redirect to admin, it should return JSON parsed on the client side
   redirect '/admin' unless defined? params[:q]
 
-  @action = "/add_book"
   @query = params[:q]
 
   resp = Curl::Easy.perform("https://www.googleapis.com/books/v1/volumes?q=" + URI.encode(@query) + "&key=" + settings.apikey)
@@ -99,4 +97,12 @@ get '/book_search/?' do
   # TODO: This shouldn't load admin by default, it should be general
   @route = { method: "POST", action: "/books" }
   haml :admin
+end
+
+get '/ajax_search/?' do
+  return JSON.generate({totalItems: 0}) if params[:q].nil?
+
+  @query = params[:q]
+  resp = Curl::Easy.perform("https://www.googleapis.com/books/v1/volumes?q=" + URI.encode(@query) + "&key=" + settings.apikey)
+  resp.body_str
 end

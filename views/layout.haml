@@ -4,11 +4,11 @@
     %title
       BookClaim
     %link(rel="stylesheet" href="css/bootstrap.min.css")
-    -# %link(rel="stylesheet" href="css/bootstrap-responsive.min.css")
+    -#%link(rel="stylesheet" href="css/bootstrap-responsive.min.css")
     %link(rel="stylesheet" href="css/main.css")
-    %script{ type: 'text/javascript', src: 'js/jquery-1.7.2.min.js' }
-    %script{ type: 'text/javascript', src: 'js/bootstrap.min.js' }
-    %script{ type: 'text/javascript', src: 'js/handlebars-1.0.0.b6.js' }
+    %script(type="text/javascript" src="js/jquery-1.7.2.min.js")
+    %script(type="text/javascript" src="js/bootstrap.min.js")
+    %script(type="text/javascript" src="js/handlebars-1.0.0.b6.js")
   %body
     -# Header
     .row
@@ -26,11 +26,17 @@
             %li.nav-header
               Navigation
             %li
-              %a{ href: '/' } Home
+              %a(href="/")
+                %i.icon-home
+                Home
             %li
-              %a{ href: '/books' } Books
+              %a(href="/books")
+                %i.icon-book
+                Books
             %li
-              %a{ href: '/admin' } Admin
+              %a(href="/admin")
+                %i.icon-cog
+                Admin
 
       #content.span9
         = yield
