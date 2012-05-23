@@ -39,39 +39,65 @@ end
 
 get '/admin/?' do
   protected!
+  @route = { method: "DELETE", action: "/books"}
   haml :admin, locals: { apikey: settings.apikey }
 end
 
 get '/books/?' do
-  haml :books, locals: { content: "Testing books" }
+  @route = { method: "POST", action: "/claims"}
+  haml :books
 end
 
-post '/book_search/?' do
-  # TODO: This shouldn't redirect to admin, it should be general
-  redirect '/admin' unless defined? request.params["q"]
+post '/claims/?' do
+  Claim.auto_migrate!
 
-  query = request.params["q"]
-  apikey = settings.apikey
+  claim = Claim.create({ # TODO: make this first_or_create and use PUT
+      book_id: params[:book_id],
+      name:    params[:name],
+      note:    params[:note]
+  })
 
-  resp = Curl::Easy.perform("https://www.googleapis.com/books/v1/volumes?q=" + URI.encode(query) + "&key=" + apikey)
-  resp = JSON.parse(resp.body_str)
-
-  # TODO: This shouldn't load admin by default, it should be general
-  haml :admin, locals: { apikey: apikey, books: resp["items"], query: query }
+  if claim
+    logger.info("Added claim: " + claim.inspect)
+  else
+    logger.info("Failed adding claim with params: " + params.inspect)
+  end
 end
 
-post '/add_book/?' do
+post '/books/?'  do
   Book.auto_migrate!
 
-  book = Book.new
-  book.title       = request.params["title"]
-  book.authors     = request.params["authors"].join(", ")
-  book.description = request.params["description"]
-  book.thumbnail   = request.params["thumbnail"]
+  book = Book.create({
+    title:       params["title"],
+    authors:     params["authors"].join(","), # TODO: figure out how these are being received
+    description: params["description"],
+    thumbnail:   params["thumbnail"]
+  })
 
-  book.save
+  if books
+    logger.info("Added book: " + book.inspect)
+  else
+    logger.info("Failed adding book with params: " + params.inspect)
+  end
+end
+
+delete '/books/:id/?' do
+  Book.get(params[:id]).destroy
 end
 
 get '/book_search/?' do
-  request.params.inspect
+  logger.info(params.inspect)
+  # TODO: This shouldn't redirect to admin, it should return JSON parsed on the client side
+  redirect '/admin' unless defined? params[:q]
+
+  @action = "/add_book"
+  @query = params[:q]
+
+  resp = Curl::Easy.perform("https://www.googleapis.com/books/v1/volumes?q=" + URI.encode(@query) + "&key=" + settings.apikey)
+  resp = JSON.parse(resp.body_str)
+  @books = resp["items"]
+
+  # TODO: This shouldn't load admin by default, it should be general
+  @route = { method: "POST", action: "/books" }
+  haml :admin
 end

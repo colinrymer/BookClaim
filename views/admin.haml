@@ -1,14 +1,12 @@
 .tabbable
   %ul.nav.nav-pills
     %li.active
-      %a(data-toggle="pill"){ href: '#dashboard' } Dashboard
+      %a(data-toggle="pill" href='#dashboard') Dashboard
     %li
-      %a(data-toggle="pill"){ href: '#add_a_book' } Add A Book
+      %a(data-toggle="pill" href='#add_a_book') Add A Book
 
   .tab-content
     #dashboard.tab-pane.active
-      %span{ style: 'font-weight: bold;' }
-        API Key:
-      = apikey
+      Dashboard stuff here
     #add_a_book.tab-pane
-      = partial(:'partials/book_search_partial', locals: { books: books })
+      = partial(:'partials/book_search_partial', locals: { books: @books, query: @query, route: @route })

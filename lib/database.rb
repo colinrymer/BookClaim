@@ -8,10 +8,11 @@ class Book
 
   property :id,           Serial
   property :title,        String
-  property :authors,      String
   property :description,  Text
+  property :authors,      String
   property :thumbnail,    String
 
+  has n, :claim
 end
 
 class User
@@ -21,6 +22,17 @@ class User
   property :username,     String
   property :password,     String
   property :admin,        Boolean
+end
+
+class Claim
+  include DataMapper::Resource
+
+  property :id,           Serial
+  property :name,         String
+  property :note,         Text
+  property :book_id,      Integer
+
+  belongs_to :book
 end
 
 DataMapper.finalize.auto_upgrade!
