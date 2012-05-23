@@ -15,11 +15,12 @@ $(document).ready(function() {
         $.getJSON('/ajax_search',
             { q: query },
             function(data) {
-                console.log(data);
+                console.log(data.items[0].volumeInfo);
 
-                var template = Handlebars.compile($("#booklist-template").html());
                 Handlebars.registerPartial("book", $("#book-partial").html());
-                template(data);
+                var template = Handlebars.compile($("#booklist-template").html());
+                
+                template(data.items);
 
                 $("#btnSearch").button('reset');
             }
