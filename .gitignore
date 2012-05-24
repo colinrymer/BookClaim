@@ -3,3 +3,4 @@
 *.swp
 *.swc
 Config.ru
+Gemfile.lock
