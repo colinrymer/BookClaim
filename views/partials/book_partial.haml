@@ -1,31 +1,35 @@
 %script#book-partial(type="text/x-handlebars-template")
-    %ul(class="thumbnails")
-        %li.span2
-            {{#if volumeInfo.imageLinks }}
-            .thumbnail
-                %img(src="{{volumeInfo,imageLinks.thumbnail}}" alt="{{volumeInfo.title}}")
-                %input(type="hidden" name="thumbnail" value="{{volumeInfo.imageLinks.thumbnail}}")
-            {{/if}}
+    {{#with volumeInfo.imageLinks.thumbnail}}
+    {{debug}}
+    .well
+        %ul(class="thumbnails")
+            %li.span2
+                plain: {{#if imageLinks }}
+                .thumbnail
+                    %img(src="{{imageLinks.thumbnail}}" alt="{{title}}")
+                    %input(type="hidden" name="thumbnail" value="{{imageLinks.thumbnail}}")
+                plain: {{/if}}
 
-            %h4.title plain: {{volumeInfo.title}}
-            %input(type="hidden" name="thumbnail" value="{{volumeInfo.title}}")
+                %h4.title plain: {{title}}
+                %input(type="hidden" name="thumbnail" value="{{volumeInfo.title}}")
 
-            {{#if volumeInfo.authors}}
-            .authors"
-            {{#join volumeInfo.authors}}
-            %input(type="hidden" name="thumbnail" value="{{#join volumeInfo.authors}}")
-            {{/if}}
+                plain: {{#if authors}}
+                .authors
+                plain: {{join authors}}
+                %input(type="hidden" name="thumbnail" value="{{join authors}}")
+                plain: {{/if}}
 
-            %button.btn.btn-primary(type="submit")
-                %i.icon-plus
-                Add
+                %button.btn.btn-primary(type="submit")
+                    %i.icon-plus
+                    Add
+    {{/with}}
 
 %script#booklist-template(type="text/x-handlebars-template")
     :plain
-        {{#if books}}
-            {{#each books}}
+        {{#if items}}
+            {{#items}}
                 {{> book}}
-            {{/each}}
+            {{/items}}
         {{/if}}
 
 -#<!--<script type="text/javascript">-->

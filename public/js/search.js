@@ -1,4 +1,22 @@
 $(document).ready(function() {
+    Handlebars.registerHelper('join', function(arr) {
+        return new Handlebars.SafeString(
+            arr.join(", ")
+        );
+    });
+
+    Handlebars.registerHelper("debug", function(optionalValue) {
+        console.log("Current Context");
+        console.log("====================");
+        console.log(this);
+
+        if (optionalValue) {
+            console.log("Value");
+            console.log("====================");
+            console.log(optionalValue);
+        }
+    });
+
     $('#btnSearch').button();
 
     $("#btnSearch").click(function() {
@@ -15,22 +33,15 @@ $(document).ready(function() {
         $.getJSON('/ajax_search',
             { q: query },
             function(data) {
-                console.log(data.items[0].volumeInfo);
+//                console.log(data.items);
 
-                Handlebars.registerPartial("book", $("#book-partial").html());
                 var template = Handlebars.compile($("#booklist-template").html());
-                
-                template(data.items);
+                Handlebars.registerPartial("book", $("#book-partial").html());
+
+                template(data);
 
                 $("#btnSearch").button('reset');
             }
-        );
-    });
-
-    // TODO: Maybe register this elsewhere
-    Handlebars.registerHelper('join', function(arr) {
-        return new Handlebars.SafeString(
-            arr.join(", ")
         );
     });
 });
