@@ -1,10 +1,8 @@
 %script(type="text/javascript" src="js/search.js")
-.well
+#search.well
   %input.search-query.input-medium(type="text" placeholder="ISBN or Title" name="q"){ value: (query unless query.nil?) }
   %button#btnSearch.btn.btn-inverse(data-loading-text="Searching...")
     %i.icon-search.icon-white
     Search
+#searchResults.well
   = partial(:'partials/book_partial')
--#- unless books.nil?
--#  .well
--#    = partial(:'partials/book_partial', locals: { books: books, search: true, route: @route })

@@ -38,7 +38,9 @@ $(document).ready(function() {
                 var template = Handlebars.compile($("#booklist-template").html());
                 Handlebars.registerPartial("book", $("#book-partial").html());
 
-                template(data);
+                if ($("#searchResults"))
+                    $("#searchResults").empty();
+                $("#searchResults").append(template(data));
 
                 $("#btnSearch").button('reset');
             }

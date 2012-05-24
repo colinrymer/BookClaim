@@ -1,36 +1,34 @@
 %script#book-partial(type="text/x-handlebars-template")
-    {{#with volumeInfo.imageLinks.thumbnail}}
-    {{debug}}
-    .well
-        %ul(class="thumbnails")
-            %li.span2
-                plain: {{#if imageLinks }}
-                .thumbnail
-                    %img(src="{{imageLinks.thumbnail}}" alt="{{title}}")
-                    %input(type="hidden" name="thumbnail" value="{{imageLinks.thumbnail}}")
-                plain: {{/if}}
+    {{#with volumeInfo}}
+    %li.span2
+        {{#if imageLinks }}
+        .thumbnail
+            %img(src="{{imageLinks.thumbnail}}" alt="{{title}}")
+            %input(type="hidden" name="thumbnail" value="{{imageLinks.thumbnail}}")
+            {{/if}}
 
-                %h4.title plain: {{title}}
-                %input(type="hidden" name="thumbnail" value="{{volumeInfo.title}}")
+            %h4.title {{title}}
+            %input(type="hidden" name="thumbnail" value="{{volumeInfo.title}}")
 
-                plain: {{#if authors}}
-                .authors
-                plain: {{join authors}}
+            {{#if authors}}
+            .authors
+                {{join authors}}
                 %input(type="hidden" name="thumbnail" value="{{join authors}}")
-                plain: {{/if}}
+                {{/if}}
 
-                %button.btn.btn-primary(type="submit")
-                    %i.icon-plus
-                    Add
+            %button.btn.btn-primary(type="submit")
+                %i.icon-plus.icon-white
+                Add
     {{/with}}
 
 %script#booklist-template(type="text/x-handlebars-template")
-    :plain
-        {{#if items}}
-            {{#items}}
-                {{> book}}
-            {{/items}}
-        {{/if}}
+    %ul(class="thumbnails")
+        :plain
+            {{#if items}}
+                {{#items}}
+                    {{> book}}
+                {{/items}}
+            {{/if}}
 
 -#<!--<script type="text/javascript">-->
 -#    <!--$(document).ready(function() {-->
