@@ -3,22 +3,23 @@
     %li.span2
         {{#if imageLinks }}
         .thumbnail
-            %img(src="{{imageLinks.thumbnail}}" alt="{{title}}")
-            %input(type="hidden" name="thumbnail" value="{{imageLinks.thumbnail}}")
-            {{/if}}
-
-            %h4.title {{title}}
-            %input(type="hidden" name="thumbnail" value="{{volumeInfo.title}}")
-
-            {{#if authors}}
-            .authors
-                {{join authors}}
-                %input(type="hidden" name="thumbnail" value="{{join authors}}")
+            %form{action: "/books", :method => "post"}
+                %img(src="{{imageLinks.thumbnail}}" alt="{{title}}")
+                %input(type="hidden" name="thumbnail" value="{{imageLinks.thumbnail}}")
                 {{/if}}
 
-            %button.btn.btn-primary(type="submit")
-                %i.icon-plus.icon-white
-                Add
+                %h4.title {{title}}
+                %input(type="hidden" name="title" value="{{volumeInfo.title}}")
+
+                {{#if authors}}
+                .authors
+                    {{join authors}}
+                    %input(type="hidden" name="authors" value="{{join authors}}")
+                    {{/if}}
+
+                %button.btn.btn-primary(type="submit")
+                    %i.icon-plus.icon-white
+                    Add
     {{/with}}
 
 %script#booklist-template(type="text/x-handlebars-template")

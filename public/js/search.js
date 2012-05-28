@@ -30,7 +30,7 @@ $(document).ready(function() {
             return false;
         }
 
-        $.getJSON('/ajax_search',
+        $.getJSON('/search',
             { q: query },
             function(data) {
 //                console.log(data.items);

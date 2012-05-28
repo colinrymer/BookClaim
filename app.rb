@@ -1,15 +1,21 @@
 require 'sinatra'
 require 'sinatra/config_file'
-require './lib/database'
+require 'sinatra/json'
+require 'sinatra/respond_with'
+require 'sinatra/reloader' if development?
 require 'net/http'
 require 'json'
 require 'curb'
 require 'haml'
 
-enable :logging, :sessions
+require './lib/database'
 
+enable :sessions
+respond_to :html, :json
 config_file 'config.yml'
 
+
+#look at pulling helpers into own file
 helpers do
   def protected!
     unless authorized?
@@ -28,8 +34,8 @@ helpers do
     haml page.to_sym, options.merge!(:layout => false), locals
   end
 
-  def logger
-    request.logger
+  def book_query(query)
+    Curl::Easy.perform("https://www.googleapis.com/books/v1/volumes?q=#{URI.encode query}&key=#{settings.apikey}").body_str
   end
 end
 
@@ -40,7 +46,7 @@ end
 get '/admin/?' do
   protected!
   @route = { method: "DELETE", action: "/books"}
-  haml :admin, locals: { apikey: settings.apikey }
+  haml :admin
 end
 
 get '/books/?' do
@@ -48,61 +54,45 @@ get '/books/?' do
   haml :books
 end
 
-post '/claims/?' do
-  Claim.auto_migrate!
+post '/books/?'  do
+  book = Book.create({
+    title:       params["title"],
+    authors:     params["authors"],
+    thumbnail:   params["thumbnail"]
+  })
 
+  #TODO handle success/failure
+end
+
+delete '/books/:id/?' do
+  protected!
+  Book.get(params[:id]).destroy
+end
+
+post '/claims/?' do
   claim = Claim.create({ # TODO: make this first_or_create and use PUT
       book_id: params[:book_id],
       name:    params[:name],
       note:    params[:note]
   })
 
-  if claim
-    logger.info("Added claim: " + claim.inspect)
-  else
-    logger.info("Failed adding claim with params: " + params.inspect)
-  end
+  logger.info claim ? "Added claim: #{claim.inspect}" : "Failed adding claim with params: #{params.inspect}"
+
+  #TODO handle success/failure
 end
 
-post '/books/?'  do
-  Book.auto_migrate!
-
-  book = Book.create({
-    title:       params["title"],
-    authors:     params["authors"].join(","), # TODO: figure out how these are being received
-    thumbnail:   params["thumbnail"]
-  })
-
-  if books
-    logger.info("Added book: " + book.inspect)
-  else
-    logger.info("Failed adding book with params: " + params.inspect)
-  end
-end
-
-delete '/books/:id/?' do
-  Book.get(params[:id]).destroy
-end
-
-get '/book_search/?' do
+get '/search/?' do
   # TODO: This shouldn't redirect to admin, it should return JSON parsed on the client side
   redirect '/admin' unless defined? params[:q]
 
-  @query = params[:q]
-
-  resp = Curl::Easy.perform("https://www.googleapis.com/books/v1/volumes?q=" + URI.encode(@query) + "&key=" + settings.apikey)
-  resp = JSON.parse(resp.body_str)
-  @books = resp["items"]
+  @query  = params[:q]
+  @result = book_query(@query)
+  @books  = JSON.parse(@result)["items"]
 
   # TODO: This shouldn't load admin by default, it should be general
   @route = { method: "POST", action: "/books" }
-  haml :admin
-end
-
-get '/ajax_search/?' do
-  return JSON.generate({totalItems: 0}) if params[:q].nil?
-
-  @query = params[:q]
-  resp = Curl::Easy.perform("https://www.googleapis.com/books/v1/volumes?q=" + URI.encode(@query) + "&key=" + settings.apikey)
-  resp.body_str
+  respond_to do |f|
+    f.html { haml :admin }
+    f.json { params[:q].nil? ? json({totalItems: 0}) : @result }
+  end
 end
